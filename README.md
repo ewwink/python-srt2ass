@@ -1,5 +1,5 @@
 # python-srt2ass
-Python Script to Convert Subtitle formats from .srt to .ass. By default it will add black background (opaque) with yellow font color, useful to hide hardsub foreign subtitle
+Python Script to Convert Subtitle formats from .srt to .ass. By default it will add black background (opaque) with yellow font color, useful to hide foreign hardsub from movie
 
 ## Requirements ##
 
