@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+#
+# python-srt2ass: https://github.com/ewwink/python-srt2ass
+# by: ewwink
+#
 
 import sys
 import os
@@ -7,7 +11,7 @@ import codecs
 
 
 def fileopen(input_file):
-    encodings = ['utf-16', "utf-8", "cp1252", "gb2312", "gbk", "big5"]
+    encodings = ["utf-32", "utf-16", "utf-8", "cp1252", "gb2312", "gbk", "big5"]
     tmp = ''
     for enc in encodings:
         try:
@@ -30,38 +34,42 @@ def srt2ass(input_file):
 
     src = fileopen(input_file)
     tmp = src[0]
-    tmp = tmp.replace("\r", "")
+    encoding = src[1]
+    src = ''
     utf8bom = ''
 
     if u'\ufeff' in tmp:
         tmp = tmp.replace(u'\ufeff', '')
         utf8bom = u'\ufeff'
-
-    lines = tmp.split("\n")
+    
+    tmp = tmp.replace("\r", "")
+    lines = [x.strip() for x in tmp.split("\n") if x.strip()]
     subLines = ''
     tmpLines = ''
     lineCount = 0
     output_file = '.'.join(input_file.split('.')[:-1])
     output_file += '.ass'
 
-    for line in lines:
-        if re.match('^\d+$', line):
+    for ln in range(len(lines)):
+        line = lines[ln]
+        if line.isdigit() and re.match('-?\d\d:\d\d:\d\d', lines[(ln+1)]):
             if tmpLines:
                 subLines += tmpLines + "\n"
             tmpLines = ''
             lineCount = 0
             continue
         else:
-            if line:
-                if re.match('-?\d\d:\d\d:\d\d', line):
-                    line = line.replace('-0', '0')
-                    tmpLines += 'Dialogue: 0,' + line + ',SubStyle,,0,0,0,,'
+            if re.match('-?\d\d:\d\d:\d\d', line):
+                line = line.replace('-0', '0')
+                tmpLines += 'Dialogue: 0,' + line + ',SubStyle,,0,0,0,,'
+            else:
+                if lineCount < 2:
+                    tmpLines += line
                 else:
-                    if lineCount < 2:
-                        tmpLines += line
-                    else:
-                        tmpLines += '\N' + line
-                lineCount += 1
+                    tmpLines += '\N' + line
+            lineCount += 1
+        ln += 1
+
 
     subLines += tmpLines + "\n"
 
@@ -88,7 +96,7 @@ Style: SubStyle,Arial,20,&H0300FFFF,&H00FFFFFF,&H00000000,&H02000000,-1,0,0,0,10
 Format: Layer, Start, End, Style, Actor, MarginL, MarginR, MarginV, Effect, Text'''
 
     output_str = utf8bom + head_str + '\n' + subLines
-    output_str = output_str.encode(src[1])
+    output_str = output_str.encode(encoding)
 
     with open(output_file, 'wb') as output:
         output.write(output_str)
@@ -101,5 +109,3 @@ Format: Layer, Start, End, Style, Actor, MarginL, MarginR, MarginV, Effect, Text
 if len(sys.argv) > 1:
     for name in sys.argv[1:]:
         srt2ass(name)
-
-# srt2ass('./resources/lib/z1.srt')
