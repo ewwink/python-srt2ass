@@ -19,10 +19,12 @@ using command line
 
 using as module
 
-    from srt2ass import srt2ass
-    
-    assSub = srt2ass("file.srt")
-    print 'ASS subtitle saved as: ' + assSub
-    # ASS subtitle saved as: file.ass
+```python
+from srt2ass import srt2ass
+
+assSub = srt2ass("file.srt")
+print('ASS subtitle saved as: ' + assSub)
+# ASS subtitle saved as: file.ass
+```
 
 
