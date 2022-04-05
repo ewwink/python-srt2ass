@@ -29,7 +29,7 @@ def srt2ass(input_file):
         return input_file
 
     if not os.path.isfile(input_file):
-        print input_file + ' not exist'
+        print(input_file + ' not exist')
         return
 
     src = fileopen(input_file)
