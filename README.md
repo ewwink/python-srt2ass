@@ -3,7 +3,7 @@ Python script to convert Subtitle formats from `.srt` to `.ass`. By default it w
 
 ## Requirements ##
 
-* [Python 2.7](https://www.python.org/downloads/) (recommend)
+* [Python 3](https://www.python.org/downloads/)
 * Windows/Linux/Mac/Android
 
 ## How to use ##
