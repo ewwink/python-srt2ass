@@ -66,7 +66,7 @@ def srt2ass(input_file):
                 if lineCount < 2:
                     tmpLines += line
                 else:
-                    tmpLines += '\N' + line
+                    tmpLines += "\n" + line
             lineCount += 1
         ln += 1
 
